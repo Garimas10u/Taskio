@@ -55,13 +55,13 @@ export const SIDE_MENU_USER_DATA = [
     }
 ]
 export const PRIORITY_DATA = [
-    {label:"Low"},
-    {label:"Medium"},
-    {label:"High"}
-]
+    { value: "Low", label: "Low" },
+    { value: "Medium", label: "Medium" },
+    { value: "High", label: "High" }
+];
 
 export const STATUS_DATA = [
-    {label: "Pending"},
-    {label: "In Progress"},
-    {label: "Completed"}
-]
+    { value: "Pending", label: "Pending" },
+    { value: "In Progress", label: "In Progress" },
+    { value: "Completed", label: "Completed" }
+];

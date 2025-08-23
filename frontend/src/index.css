@@ -26,3 +26,23 @@
   @apply w-full font-medium text-white bg-primary shadow-lg my-2 shadow-purple-600/5 p-2 rounded-md hover:bg-primary/90 transition-all duration-300 cursor-pointer
 }
 
+.card{
+  @apply bg-white p-6 rounded-2xl shadow-md  shadow-gray-100 border border-gray-200/50 ;
+}
+
+
+.card-btn{
+  @apply flex items-center gap-3 text-[12px] font-medium text-gray-700 hover:bg-blue-50 px-4 py-1.5 rounded-lg border border-gray-200/50 cursor-pointer
+}
+
+.card-btn-fill {
+  @apply flex items-center gap-3 text-[12px] font-medium text-white hover:text-primary bg-primary px-4 py-1.5 rounded-lg border hover:bg-blue-50 border-primary cursor-pointer;
+}
+
+.form-card{
+  @apply bg-white p-6 rounded-lg shadow-gray-100 border border-gray-200/50;
+}
+.form-input{
+  @apply w-full  gap-3 text-sm text-black bg-white outline-none border border-slate-100 rounded-md p-2 rounded-md mt-2 placeholder:text-slate-400;
+}
+

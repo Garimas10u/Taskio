@@ -1,34 +1,38 @@
-import React from 'react'
-import { useState } from 'react';
-import SideMenu from './SideMenu';
-import {HiOutlineMenu, HiOutlineX } from'react-icons/hi';
+import React from "react";
+import { HiOutlineMenu, HiOutlineX } from "react-icons/hi";
+import { FiUser } from "react-icons/fi";
+import logo from "../../assets/logo.svg";
 
-const Navbar = ({activeMenu}) => {
-    const [openSideMenu, setOpenSideMenu] = useState(false)
-
+const Navbar = ({ openSideMenu, setOpenSideMenu }) => {
   return (
-    <div className='flex gap-5 bg-white border border-b border-slate-200 py-4 px-7 sticky backdrop-blur-[2px] items-center justify-between'>
-        <button className='block lg:hidden text-black '  onClick={() => {
-            setOpenSideMenu(!openSideMenu)
-        }}>
-            {activeMenu ? 
-            (<HiOutlineX className="text-2xl" />)
-            :
-            ( 
-            <HiOutlineMenu className="text-2xl" />
-            )
-            }
-        </button>
-        <h2 className='text-lg font-medium text-black'>Taskio- Task Manager</h2>
-        {
-            openSideMenu && (
-                <div className='fixed top-[61px] -ml-4 bg-white'>
-                    <SideMenu  activeMenu={activeMenu} />
-                </div>
-            )
-        }
-    </div>
-  )
-}
+    <div className="flex items-center justify-between bg-white border-b border-slate-200 px-6 py-3 shadow-sm sticky top-0 z-50">
+      <div className="flex items-center gap-3">
+        <img src={logo} alt="Taskio Logo" className="h-8 w-8 object-contain" />
+        <h1 className="text-xl font-semibold text-slate-800 tracking-tight">
+          Taskio
+        </h1>
+      </div>
 
-export default Navbar
+      <h2 className="hidden md:block text-lg font-medium text-slate-600">
+        Task Manager
+      </h2>
+
+      <div className="flex items-center gap-4">
+        <button
+          className="block lg:hidden text-slate-700"
+          onClick={() => setOpenSideMenu(!openSideMenu)}
+        >
+          {openSideMenu ? (
+            <HiOutlineX className="text-2xl" />
+          ) : (
+            <HiOutlineMenu className="text-2xl" />
+          )}
+        </button>
+
+        
+      </div>
+    </div>
+  );
+};
+
+export default Navbar;
