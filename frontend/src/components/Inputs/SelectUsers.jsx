@@ -34,7 +34,7 @@ const SelectUsers = ({ selectedUsers, setSelectedUsers }) => {
 
   const selectedUserAvatars = allUsers
     .filter((user) => selectedUsers.includes(user._id))
-    .map((user) => user.profileImageUrl);
+    .map((user) => user.profileImageURL);
 
   useEffect(() => {
     getAllUsers();
@@ -64,7 +64,7 @@ const SelectUsers = ({ selectedUsers, setSelectedUsers }) => {
         <div className='space-y-4 h-[64vh] overflow-y-auto'>
           {allUsers.map((user) => (
             <div key={user._id} className='flex items-center p-3 gap-4 border-b border-gray-200'>
-              <img src={user.profileImageUrl} alt={user.name} className='w-8 h-8 rounded-full object-cover' />
+              <img src={user.profileImageURL} alt={user.name} className='w-8 h-8 rounded-full object-cover' />
               <div className='flex-1'>
                 <p className='font-medium text-gray-800 dark:text-white'>{user.name}</p>
                 <p className='text-sm text-gray-600'>{user.email}</p>

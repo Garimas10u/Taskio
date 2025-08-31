@@ -13,11 +13,11 @@ const getTasks = async(req, res) => {
         let tasks;
 
         if(req.user.role === "admin"){
-            tasks =  await Task.find(filter).populate("assignedTo", "name email profileImageUrl"
+            tasks =  await Task.find(filter).populate("assignedTo", "name email profileImageURL"
             );
         }else{
             tasks = await Task.find({...filter, assignedTo: req.user._id }).populate(
-                "assignedTo", "name email profileImageUrl"
+                "assignedTo", "name email profileImageURL"
             )
         }
 
@@ -73,7 +73,7 @@ const getTasks = async(req, res) => {
 
 const getTaskById = async(req, res)=>{
     try{
-        const task = await Task.findById(req.params.id).populate("assignedTo", "name email profileImageUrl");
+        const task = await Task.findById(req.params.id).populate("assignedTo", "name email profileImageURL");
         if(!task){
             return res.status(404).json({message: "Task not found"});
         }
@@ -203,7 +203,7 @@ const updateTaskChecklist = async(req, res)=>{
 
         await task.save();
         const updatedTask = await Task.findById(req.params.id).populate(
-            "assignedTo", "name email profileImageUrl"
+            "assignedTo", "name email profileImageURL"
         );
         res.json({message: "Task updated successfully", task: updatedTask});
 

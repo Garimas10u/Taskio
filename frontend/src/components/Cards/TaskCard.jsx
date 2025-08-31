@@ -40,7 +40,7 @@ const TaskCard = ({
 
   return (
     <div className='bg-white rounded-xl py-4 shadow-md shadow-gray-100 border border-gray-200/50 cursor-pointer ' onClick={onClick}>
-        <div className='flex item-end gap-3 px-4'>
+        <div className='flex items-end gap-3 px-4'>
             <div className={`text-[11px]  font-medium ${getStatusTagColor()} px-4 py-0.5 rounded`}>{status}</div>
             <div className={`text-[11px]  font-medium ${getPriorityTagColor()} px-4 py-0.5 rounded`}>{priority} Priority</div>
         </div>
@@ -67,11 +67,13 @@ const TaskCard = ({
             <div className='flex items-center justify-between my-1'>
                 <div>
                     <label className='text-xs text-gray-500'>Start Date</label>
-                    <p className='text-[13px] font-medium text-gray-900'>{moment(createdAt).format ("Do MM YYYY")}</p>
+                    <p className='text-[13px] font-medium text-gray-900'>{moment(createdAt).format ("DD/MM/YYYY")}</p>
                 </div>
             </div>
             <div className='flex items-center justify-between mt-3'>
                 <AvatarGroup avatars={assignedTo || []} />
+                
+
 
                 {attachmentCount > 0 &&(
                     <div className="flex items-center gap-2 bg-blue-50 px-2.5 py-1.5 rounded-lg">

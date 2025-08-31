@@ -47,7 +47,7 @@ const SideMenu = ({ activeMenu, setOpenSideMenu }) => {
       <div className="flex flex-col items-center justify-center pb-6 pt-2 bg-blue-100">
         <div className="relative">
           <img
-            src={user?.profileImageUrl || "ProfileImage"}
+            src={user?.profileImageURL || "ProfileImage"}
             className="w-14 h-14 rounded-full object-cover border-2 border-blue-500 shadow-sm"
           />
         </div>
