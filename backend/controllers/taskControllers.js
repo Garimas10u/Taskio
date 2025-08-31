@@ -152,9 +152,6 @@ const updateTaskStatus = async(req, res)=>{
        if(!isAssigned && req.user.role !== "admin"){
         return res.status(403).json({message: "Not Authorized"});
        }
-
-       if(!isAssigned) return res.status(403).json({message: "Not Authorized"});
-
        task.status = req.body.status || task.status;
 
        if(task.status === "Completed"){

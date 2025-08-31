@@ -15,7 +15,7 @@ export const API_PATHS = {
     },
     TASKS:{
         GET_DASHBOARD_DATA: "/api/tasks/dashboard-data",
-        GET_USER_DASHBOARD_DATA: (userId) => `/api/tasks/user-dashboard-data`,
+        GET_USER_DASHBOARD_DATA:"/api/tasks/user-dashboard-data",
         GET_ALL_TASKS: "/api/tasks",
         CREATE_TASK: "/api/tasks",
         GET_TASK_BY_ID: (taskId) => `/api/tasks/${taskId}`,
@@ -25,8 +25,8 @@ export const API_PATHS = {
         UPDATE_TODO_CHECKLIST: (taskId) => `/api/tasks/${taskId}/todo`
     },
     REPORTS:{
-        EXPORT_TASKS: "/api/reports/export-tasks",
-        EXPORT_USERS: "/api/reports/export-users",
+        EXPORT_TASKS: "/api/reports/export/tasks",
+        EXPORT_USERS: "/api/reports/export/users",
     },
     IMAGE:{
         UPLOAD_IMAGE: "/api/auth/upload-image"
