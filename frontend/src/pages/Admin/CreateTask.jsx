@@ -1,19 +1,23 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import DashboardLayout from '../../components/layouts/Dashboardlayout'
 import { PRIORITY_DATA } from '../../utils/data'
 import axiosInstance from '../../utils/axiosInstance'
 import { API_PATHS } from '../../utils/apiPaths'
 import toast from 'react-hot-toast'
 import { useLocation, useNavigate } from 'react-router-dom'
+import moment from 'moment'
 import { LuTrash2 } from 'react-icons/lu'
 import SelectDropDown from '../../components/Inputs/SelectDropDown'
 import SelectUsers from '../../components/Inputs/SelectUsers'
 import TodoListInput from '../../components/layouts/TodoListInput'
 import AddAttachmentsInput from '../../components/Inputs/AddAttachmentsInput'
+import Modal from '../../components/layouts/Modal'
+import DeleteAlert from '../../components/layouts/DeleteAlert'
 
 const CreateTask = () => {
   const location = useLocation()
   const navigate = useNavigate()
+  const taskId = location.state?.taskId;
 
   const [taskData, setTaskData] = useState({
     title: "",
@@ -27,6 +31,7 @@ const CreateTask = () => {
 
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
+  const [currentTask, setCurrentTask] = useState(null);
   const [openDeleteAlert, setOpenDeleteAlert] = useState(false)
   
   const handleValueChange = (key, value) => {
@@ -69,7 +74,33 @@ const CreateTask = () => {
   }
 
   const updateTask = async () => {
+    setLoading(true);
+    try{
+      const todolist = taskData.todoChecklist?.map((item)=> {
+        const prevTodoChecklist = currentTask?.todoChecklist || [];
+        const matchedTask =  prevTodoChecklist.find((task)=> task.text==item);
+        return {
+          text:item,
+          completed: matchedTask? matchedTask.completed: false,
+        } 
+      })
+      const response = await axiosInstance.put(
+        API_PATHS.TASKS.UPDATE_TASK(taskId),
+        {
+          ...taskData,
+          dueDate: new Date(taskData.dueDate).toISOString(),
+          todoChecklist: todolist,
+        }
+      )
+      toast.success("Task Updated successfully");
 
+      
+    }catch(error){
+      console.error("Error creating task", error);
+      setLoading(false);
+    }finally{
+      setLoading(false);
+    }
   }
 
   const handleSubmit = async () => {
@@ -129,8 +160,28 @@ const CreateTask = () => {
       console.error("Error fetching Users: ", error)
     }
   }
+  
+const deleteTask =  async ()=> {
+  try{
+    await axiosInstance.delete(API_PATHS.TASKS.DELETE_TASK(taskId));
+    setOpenDeleteAlert(false);
+    toast.success("Task deleted successfully");
+    navigate('/admin/tasks');
+  }catch(error){
+    console.error("Error deleting task:", 
+      error.response?.data?.message || error.message);
+  }
+}
 
-  const taskId = location.state?.taskId
+  useEffect(()=> {
+    if(taskId) {
+      getTaskDetailsById(taskId);
+    }
+    return ()=> {
+
+    }
+  }, [taskId])
+  
 
   return (
     <DashboardLayout activeMenu="Create Task">
@@ -254,6 +305,16 @@ const CreateTask = () => {
           </div>
         </div>
       </div>
+
+      <Modal isOpen ={openDeleteAlert}
+      onClose={()=> setOpenDeleteAlert(false)}
+      title="Delete task"
+      >
+        <DeleteAlert content="Are you sure you want to delete this task?"
+        onDelete={()=> deleteTask()} />
+      </Modal>
+
+
     </DashboardLayout>
   )
 }
