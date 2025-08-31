@@ -47,9 +47,9 @@ const SelectUsers = ({ selectedUsers, setSelectedUsers }) => {
   }, [selectedUsers]);
 
   return (
-    <div className='space-y-4 mt-2'>
+    <div className='space-y-4 mt-2 py-0.5  rounded-md bg-blue-100 border border-blue-300'>
       {selectedUserAvatars.length === 0 && (
-        <button className='card-btn' onClick={() => setIsModalOpen(true)}>
+        <button className="flex gap-2 mt-1 p-1 text-sm" onClick={() => setIsModalOpen(true)}>
           <LuUsers className='text-sm' /> Add Members
         </button>
       )}

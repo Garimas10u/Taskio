@@ -32,7 +32,7 @@
 
 
 .card-btn{
-  @apply flex items-center gap-3 text-[12px] font-medium text-gray-700 hover:bg-blue-50 px-4 py-1.5 rounded-lg border border-gray-200/50 cursor-pointer
+  @apply flex items-center gap-3 font-medium text-pink-800 bg-pink-100 hover:bg-blue-50 px-4 py-1.5 rounded-lg border border-pink-300 cursor-pointer
 }
 
 .card-btn-fill {
@@ -43,6 +43,10 @@
   @apply bg-white p-6 rounded-lg shadow-gray-100 border border-gray-200/50;
 }
 .form-input{
-  @apply w-full  gap-3 text-sm text-black bg-white outline-none border border-slate-100 rounded-md p-2 rounded-md mt-2 placeholder:text-slate-400;
+  @apply w-full gap-3 text-sm text-black bg-blue-100 outline-none border border-blue-300 p-2 rounded-md mt-2 placeholder:text-slate-400;
 }
+.download-btn{
+  @apply flex items-center justify-center gap-3 text-xs md:text-[13px] text-lime-900 bg-lime-100 px-2 md:px-3 py-2 rounded border-lime-200 hover:border-lime-400 cursor-pointer
+}
+
 

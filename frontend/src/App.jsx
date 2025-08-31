@@ -5,6 +5,7 @@ import SignUp from './pages/Auth/SignUp'
 import { Outlet } from 'react-router-dom'
 import { Navigate } from 'react-router-dom'
 import { UserContext } from './context/userContext'
+import { Toaster } from 'react-hot-toast'
 
 import PrivateRoute from './routes/PrivateRoute'
 import Dashboard from './pages/Admin/Dashboard'
@@ -45,6 +46,15 @@ const App = () => {
           </Routes>
         </Router>
       </div>
+
+      <Toaster 
+      toastOptions={{
+        className: "",
+        style: {
+          fontSize: "13px",
+        },
+      }}
+      />
     </UserProvider>
   )
 }

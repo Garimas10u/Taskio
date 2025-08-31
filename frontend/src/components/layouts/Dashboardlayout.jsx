@@ -13,7 +13,7 @@ const DashboardLayout = ({ children, activeMenu }) => {
 
       {user && (
         <div className="flex bg-blue-50/90 ">
-          <div className="hidden lg:block w-64 h-screen">
+          <div className="hidden lg:block h-screen">
             <SideMenu activeMenu={activeMenu} />
           </div>
 

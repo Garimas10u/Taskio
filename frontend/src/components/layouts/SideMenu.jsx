@@ -34,7 +34,7 @@ const SideMenu = ({ activeMenu, setOpenSideMenu }) => {
   }, [user]);
 
   return (
-    <div className="w-64 h-full bg-white border-r border-gray-200 flex flex-col shadow-sm">
+    <div className="w-64 h-full bg-blue-100 border-r border-gray-200 flex flex-col shadow-sm pt-8">
       <div className="lg:hidden flex justify-end p-4">
         <button
           onClick={() => setOpenSideMenu(false)}
