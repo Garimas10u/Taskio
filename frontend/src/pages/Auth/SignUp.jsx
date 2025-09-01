@@ -1,73 +1,117 @@
-import { useState, useContext } from "react";
+import React, { useState, useContext } from "react";
+import AuthLayout from "../../components/layouts/AuthLayout";
+import Input from "../../components/Inputs/Input";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { UserContext } from "../../context/userContext";
 
 const SignUp = () => {
   const { updateUser } = useContext(UserContext);
+  const navigate = useNavigate();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [profileImageURL, setProfileImageURL] = useState("");
+  const [error, setError] = useState(null);
 
   const handleSignUp = async (e) => {
     e.preventDefault();
+
+    if (!name) {
+      setError("Please enter your full name.");
+      return;
+    }
+    if (!email) {
+      setError("Please enter an email address.");
+      return;
+    }
+    if (!password) {
+      setError("Please enter a password.");
+      return;
+    }
+
+    setError("");
+
     try {
       const res = await axios.post("http://localhost:8000/api/auth/register", {
         name,
         email,
         password,
-        profileImageURL
+        profileImageURL,
       });
 
       const { token, user } = res.data;
-      localStorage.setItem("token", token);
-      updateUser(user);
+      if (token) {
+        localStorage.setItem("token", token);
+        updateUser(user);
+        navigate("/user/dashboard"); 
+      }
     } catch (err) {
-      console.error(err.response?.data || err.message);
+      if (err.response?.data?.message) {
+        setError(err.response.data.message);
+      } else {
+        setError("Something went wrong. Please try again later.");
+      }
     }
   };
 
   return (
-    <div className="max-w-sm mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
-      <h2 className="text-2xl font-bold mb-4 text-center">Create an Account</h2>
-      <form onSubmit={handleSignUp} className="space-y-4">
-        <input
-          type="text"
-          placeholder="Full Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className="w-full p-2 border rounded"
-        />
-        <input
-          type="email"
-          placeholder="Email Address"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="w-full p-2 border rounded"
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="w-full p-2 border rounded"
-        />
-        <input
-          type="text"
-          placeholder="Profile Image URL"
-          value={profileImageURL}
-          onChange={(e) => setProfileImageURL(e.target.value)}
-          className="w-full p-2 border rounded"
-        />
-        <button
-          type="submit"
-          className="w-full bg-blue-500 hover:bg-blue-600 text-white p-2 rounded"
-        >
-          Sign Up
-        </button>
-      </form>
-    </div>
+    <AuthLayout>
+      <div className="lg:w-[70%] h-screen flex flex-col justify-center">
+        <h1 className="text-3xl lg:text-4xl font-extrabold text-blue-800 tracking-wide mb-2">
+          Create Your Account
+        </h1>
+
+        <p className="text-lg text-slate-500 mt-[5px] mb-6">
+          Please fill in the details below
+        </p>
+
+        <form onSubmit={handleSignUp}>
+          <Input
+            value={name}
+            onChange={({ target }) => setName(target.value)}
+            label="Full Name"
+            type="text"
+            placeholder="John Doe"
+          />
+          <Input
+            value={email}
+            onChange={({ target }) => setEmail(target.value)}
+            label="Email Address"
+            type="email"
+            placeholder="john@example.com"
+          />
+          <Input
+            value={password}
+            onChange={({ target }) => setPassword(target.value)}
+            label="Password"
+            type="password"
+            placeholder="Min 8 Characters"
+          />
+          <Input
+            value={profileImageURL}
+            onChange={({ target }) => setProfileImageURL(target.value)}
+            label="Profile Image URL"
+            type="text"
+            placeholder="https://example.com/profile.jpg"
+          />
+
+          {error && <p className="text-red-500 text-xs pb-2.5">{error}</p>}
+
+          <button type="submit" className="btn-primary w-full mt-5">
+            SIGN UP
+          </button>
+
+          <p className="text-[13px] text-slate-800 mt-4 text-center">
+            Already have an account?{" "}
+            <Link className="text-blue-500 hover:underline" to="/login">
+              Login
+            </Link>
+          </p>
+        </form>
+      </div>
+    </AuthLayout>
   );
 };
 

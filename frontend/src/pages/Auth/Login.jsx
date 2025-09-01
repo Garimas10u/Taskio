@@ -59,7 +59,7 @@ const Login = () => {
 
   return (
     <AuthLayout>
-      <div className="lg:w-[70%] h-3/4 md:h-full flex flex-col justify-center ">
+      <div className="lg:w-[70%] min-h-screen flex flex-col justify-center ">
       <div>
 
       </div>

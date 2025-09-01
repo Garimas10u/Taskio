@@ -1,0 +1,24 @@
+{
+  "rewrites": [
+    {
+      "source": "/login",
+      "destination": "/login"
+    },
+    {
+      "source": "/signup",
+      "destination": "/signup"
+    },
+    {
+      "source": "/user/:path*",
+      "destination": "/user/:path*"
+    },
+    {
+      "source": "/admin/:path*",
+      "destination": "/admin/:path*"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/login"
+    }
+  ]
+}
