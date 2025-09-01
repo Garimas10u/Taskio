@@ -1,6 +1,6 @@
 import React from 'react'
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend} from "recharts";
-import CustomTooltip from './customTooltip';
+import TempTooltip from './TempTooltip';
 import CustomLegend from './CustomLegend';
 
 
@@ -24,7 +24,7 @@ const CustomPieChart = ({ data, colors }) => {
             ))}
           </Pie>
 
-          <Tooltip content={<CustomTooltip />} />
+          <Tooltip content={<TempTooltip />} />
           <Legend content={<CustomLegend />} />
         </PieChart>
       </ResponsiveContainer>

@@ -14,7 +14,7 @@ const CustomBarChart = ({ data }) => {
     }
   };
 
-  const CustomTooltip = ({ active, payload }) => {
+  const TempTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
       return (
         <div className="bg-white shadow-md rounded-lg p-2 border border-gray-300">
@@ -51,7 +51,7 @@ const CustomBarChart = ({ data }) => {
             tick={{ fontSize: 12, fill: "#555" }}
             stroke="none"
           />
-          <Tooltip content={CustomTooltip} cursor={{ fill: "transparent" }} />
+          <Tooltip content={TempTooltip} cursor={{ fill: "transparent" }} />
 
           <Bar dataKey="count" radius={[10, 10, 0, 0]}>
             {data.map((entry, index) => (
