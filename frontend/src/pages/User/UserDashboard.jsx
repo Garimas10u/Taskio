@@ -6,7 +6,7 @@ import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
 import moment from 'moment'
 import InfoCard from "../../components/Cards/InfoCard";
-import { LuArrowRight } from "react-icons/lu";
+import { LuArrowDown, LuArrowRight } from "react-icons/lu";
 import { addThousandsSeparator } from "../../utils/helper";
 import TaskListTable from "../../components/layouts/TaskListTable";
 import {IoMdCard} from 'react-icons/io';
@@ -57,10 +57,6 @@ const UserDashboard = () => {
       console.error("Error fetching users:", error);
     }
   };
-
-  const onSeeMore = ()  => {
-    navigate('/admin/tasks')
-  }
 
   useEffect(() => {
     if (!loading) {
@@ -127,7 +123,7 @@ const UserDashboard = () => {
             <div className="flex item-center justify-between">
               <h5 className="text-lg">Recent Tasks</h5>
 
-              <button className="card-btn"  onClick={onSeeMore}>See All <LuArrowRight  className="text-base" /></button>
+              <button className="card-btn" >See All <LuArrowDown className="text-base" /></button>
 
               
             </div>
