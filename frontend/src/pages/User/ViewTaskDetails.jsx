@@ -15,9 +15,9 @@ const ViewTaskDetails = () => {
   const getStatusTagColor = (status) => {
     switch(status){
       case "Completed":
-        return "bg-green-100 border border-green-200 text-green-500";
+        return "bg-lime-100 border border-lime-200 text-lime-500";
       case "Pending":
-        return "bg-yellow-100 border border-yellow-200 text-yellow-500";
+        return "bg-cyan-100 border border-cyan-200 text-cyan-500";
       case "In Progress":
         return "bg-blue-100 border border-blue-200 text-blue-500";
       default:
@@ -38,11 +38,32 @@ const ViewTaskDetails = () => {
   };
 
 
-  const updateTodoChecklist = async (index)=> {};
+  const updateTodoChecklist = async (index)=> {
+    const todoChecklist=[...task?.todoChecklist];
+    const taskId = id;
+
+    if(todoChecklist && todoChecklist[index]){
+      todoChecklist[index].completed = !todoChecklist[index].completed;
+      try{
+        const response =await axiosInstance.put(API_PATHS.TASKS.UPDATE_TODO_CHECKLIST(taskId),
+      {todoChecklist});
+      if(response.status ===200){
+        setTask(response.data?.task || task)
+      }else{
+        todoChecklist[index].completed = !todoChecklist[index].completed;
+      }
+      }catch(error){
+        todoChecklist[index].completed = !todoChecklist[index].completed
+      }
+    }
+  };
 
   const handleLinkClick = (link)=> {
+    if(!/^https?:\/\//i.test(link)){
+      link = "https://" + link;
+    }
     window.open(link, "_blank")
-  }
+  };
 
   useEffect(() => {
     if(id) {
@@ -118,7 +139,7 @@ const InfoBox =({label, value}) => {
    return <>
 
    <label className="text-xs font-medium text-slate-500">{label}</label>
-   <p classname="text-[13px] md: [13px]font--medium text-gray-700 mt-0.5">{value}</p>
+   <p className="text-[13px] md: [13px]font--medium text-gray-700 mt-0.5">{value}</p>
    </>
 }
 

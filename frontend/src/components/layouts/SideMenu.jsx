@@ -10,7 +10,7 @@ const SideMenu = ({ activeMenu, setOpenSideMenu }) => {
   const navigate = useNavigate();
 
   const handleClick = (route) => {
-    if (route === "Logout") {
+    if (route === "/logout") {
       handleLogout();
       return;
     }
@@ -20,7 +20,7 @@ const SideMenu = ({ activeMenu, setOpenSideMenu }) => {
 
   const handleLogout = () => {
     localStorage.clear();
-    clearUser();
+    clearUser;
     navigate("/login");
     if (setOpenSideMenu) setOpenSideMenu(false);
   };
