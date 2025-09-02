@@ -2,8 +2,9 @@ import React, { useState, useContext } from "react";
 import AuthLayout from "../../components/layouts/AuthLayout";
 import Input from "../../components/Inputs/Input";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
 import { UserContext } from "../../context/userContext";
+import axiosInstance from "../../utils/axiosInstance";
+import { API_PATHS } from "../../utils/apiPaths";
 
 const SignUp = () => {
   const { updateUser } = useContext(UserContext);
@@ -34,22 +35,28 @@ const SignUp = () => {
     setError("");
 
     try {
-      const res = await axios.post("http://localhost:8000/api/auth/register", {
+      const response = await axiosInstance.post(API_PATHS.AUTH.REGISTER, {
         name,
         email,
         password,
         profileImageURL,
       });
 
-      const { token, user } = res.data;
+      const { token, role,...user } = response.data;
+
       if (token) {
         localStorage.setItem("token", token);
         updateUser(user);
-        navigate("/user/dashboard"); 
+
+        if (role === "admin") {
+          navigate("/admin/dashboard");
+        } else {
+          navigate("/user/dashboard");
+        }
       }
-    } catch (err) {
-      if (err.response?.data?.message) {
-        setError(err.response.data.message);
+    } catch (error) {
+      if (error.response?.data?.message) {
+        setError(error.response.data.message);
       } else {
         setError("Something went wrong. Please try again later.");
       }
