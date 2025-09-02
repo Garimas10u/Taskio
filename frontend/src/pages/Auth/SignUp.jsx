@@ -15,6 +15,7 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [profileImageURL, setProfileImageURL] = useState("");
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false); 
 
   const handleSignUp = async (e) => {
     e.preventDefault();
@@ -33,6 +34,7 @@ const SignUp = () => {
     }
 
     setError("");
+    setLoading(true); 
 
     try {
       const response = await axiosInstance.post(API_PATHS.AUTH.REGISTER, {
@@ -42,7 +44,7 @@ const SignUp = () => {
         profileImageURL,
       });
 
-      const { token, role,...user } = response.data;
+      const { token, role, ...user } = response.data;
 
       if (token) {
         localStorage.setItem("token", token);
@@ -60,6 +62,8 @@ const SignUp = () => {
       } else {
         setError("Something went wrong. Please try again later.");
       }
+    } finally {
+      setLoading(false); 
     }
   };
 
@@ -101,13 +105,24 @@ const SignUp = () => {
             onChange={({ target }) => setProfileImageURL(target.value)}
             label="Profile Image URL"
             type="text"
-            placeholder="https://example.com/profile.jpg"
+            placeholder="https://example.com/profile.jpg (Optional)"
           />
 
           {error && <p className="text-red-500 text-xs pb-2.5">{error}</p>}
 
-          <button type="submit" className="btn-primary w-full mt-5">
-            SIGN UP
+          <button
+            type="submit"
+            disabled={loading}
+            className="btn-primary w-full mt-5 flex items-center justify-center gap-2"
+          >
+            {loading ? (
+              <>
+                <div className="loader h-4 w-4"></div>
+                Signing Up...
+              </>
+            ) : (
+              "SIGN UP"
+            )}
           </button>
 
           <p className="text-[13px] text-slate-800 mt-4 text-center">

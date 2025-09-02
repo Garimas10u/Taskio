@@ -11,6 +11,7 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const { updateUser } = useContext(UserContext);
   const navigate = useNavigate();
@@ -29,6 +30,7 @@ const Login = () => {
     }
 
     setError('');
+    setLoading(true);
 
     try {
       const response = await axiosInstance.post(API_PATHS.AUTH.LOGIN, {
@@ -54,19 +56,18 @@ const Login = () => {
       } else {
         setError('Something went wrong. Please try again later.');
       }
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <AuthLayout>
       <div className="lg:w-[70%] min-h-screen flex flex-col justify-center ">
-      <div>
-
-      </div>
         <h1 className=" text-3xl lg:text-4xl font-extrabold text-blue-800 tracking-wide mb-2">
           Welcome to Taskio!
         </h1>
-        
+
         <p className="text-lg text-slate-500 mt-[5px] mb-6 ">
           Please Enter Your Details
         </p>
@@ -90,9 +91,20 @@ const Login = () => {
             <p className="text-red-500 text-xs pb-2.5">{error}</p>
           )}
 
-          <button type="submit" className="btn-primary w-full mt-5">
-            LOGIN
+          <button
+            disabled={loading}
+            className="btn-primary flex items-center justify-center gap-2"
+          >
+            {loading ? (
+              <>
+                <div className="loader h-4 w-4 border-2 rounded-full animate-spin"></div>
+                Logging in...
+              </>
+            ) : (
+              "Login"
+            )}
           </button>
+
           <p className="text-[13px] text-slate-800 mt-4 text-center">
             Don't have an account?{' '}
             <Link className="text-blue-500 hover:underline" to="/signup">
