@@ -10,31 +10,38 @@ const SignUp = () => {
   const { updateUser } = useContext(UserContext);
   const navigate = useNavigate();
 
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [profileImageURL, setProfileImageURL] = useState("");
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    profileImageURL: "",
+    role: "member",
+    adminInviteToken: "",
+  });
+
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false); 
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (field) => (e) => {
+    setFormData({ ...formData, [field]: e.target.value });
+  };
 
   const handleSignUp = async (e) => {
     e.preventDefault();
+    const { name, email, password, profileImageURL, role, adminInviteToken } = formData;
 
-    if (!name) {
-      setError("Please enter your full name.");
+    if (!name || !email || !password) {
+      setError("Please fill all required fields.");
       return;
     }
-    if (!email) {
-      setError("Please enter an email address.");
-      return;
-    }
-    if (!password) {
-      setError("Please enter a password.");
+
+    if (role === "admin" && !adminInviteToken) {
+      setError("Please enter Admin Access Token for admin role.");
       return;
     }
 
     setError("");
-    setLoading(true); 
+    setLoading(true);
 
     try {
       const response = await axiosInstance.post(API_PATHS.AUTH.REGISTER, {
@@ -42,73 +49,92 @@ const SignUp = () => {
         email,
         password,
         profileImageURL,
+        role,
+        adminInviteToken: adminInviteToken,
       });
 
-      const { token, role, ...user } = response.data;
+      const { token, role: userRole, ...user } = response.data;
 
       if (token) {
         localStorage.setItem("token", token);
         updateUser(user);
 
-        if (role === "admin") {
-          navigate("/admin/dashboard");
-        } else {
-          navigate("/user/dashboard");
-        }
+        navigate(userRole === "admin" ? "/admin/dashboard" : "/user/dashboard");
       }
     } catch (error) {
-      if (error.response?.data?.message) {
-        setError(error.response.data.message);
-      } else {
-        setError("Something went wrong. Please try again later.");
-      }
+      setError(
+        error.response?.data?.message ||
+          "Something went wrong. Please try again later."
+      );
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   };
 
   return (
     <AuthLayout>
-      <div className="lg:w-[70%] h-screen flex flex-col justify-center">
-        <h1 className="text-3xl lg:text-4xl font-extrabold text-blue-800 tracking-wide mb-2">
+      <div className="lg:w-[70%] h-screen flex flex-col mt-6">
+        <h1 className="text-3xl lg:text-4xl font-extrabold text-blue-800 tracking-wide ">
           Create Your Account
         </h1>
 
-        <p className="text-lg text-slate-500 mt-[5px] mb-6">
+        <p className="text-lg text-slate-500 mt-[5px] mb-4">
           Please fill in the details below
         </p>
 
         <form onSubmit={handleSignUp}>
           <Input
-            value={name}
-            onChange={({ target }) => setName(target.value)}
+            value={formData.name}
+            onChange={handleChange("name")}
             label="Full Name"
             type="text"
             placeholder="John Doe"
           />
           <Input
-            value={email}
-            onChange={({ target }) => setEmail(target.value)}
+            value={formData.email}
+            onChange={handleChange("email")}
             label="Email Address"
             type="email"
             placeholder="john@example.com"
           />
           <Input
-            value={password}
-            onChange={({ target }) => setPassword(target.value)}
+            value={formData.password}
+            onChange={handleChange("password")}
             label="Password"
             type="password"
             placeholder="Min 8 Characters"
           />
           <Input
-            value={profileImageURL}
-            onChange={({ target }) => setProfileImageURL(target.value)}
+            value={formData.profileImageURL}
+            onChange={handleChange("profileImageURL")}
             label="Profile Image URL"
             type="text"
             placeholder="https://example.com/profile.jpg (Optional)"
           />
 
-          {error && <p className="text-red-500 text-xs pb-2.5">{error}</p>}
+          <div className="mb-4">
+            <label className="text-[13px] text-slate-800">Role</label>
+            <select
+              value={formData.role}
+              onChange={handleChange("role")}
+              className="input-box w-full"
+            >
+              <option value="member">Member</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+
+          {formData.role === "admin" && (
+            <Input
+              value={formData.adminInviteToken}
+              onChange={handleChange("adminInviteToken")}
+              label="Admin Access Token"
+              type="text"
+              placeholder="Enter Admin Token"
+            />
+          )}
+
+          {error && <p className="text-red-500 text-xs pb-1">{error}</p>}
 
           <button
             type="submit"
